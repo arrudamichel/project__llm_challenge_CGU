@@ -80,7 +80,7 @@ Resposta [200]:
 }
 ```
 
-- [POST] /classify/
+- [TODO][POST] /classify/
 
 Parametros:
    
