@@ -1,0 +1,29 @@
+name: test_cd_cgu
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+
+  - pip:
+    - transformers
+
+    - langchain
+    - langchain-community
+    - langchain-huggingface
+    - langchainhub
+    - langchain_chroma
+
+    - tensorflow-macos
+    - tensorflow-metal
+
+    - fastapi
+    - uvicorn
+    - sentence-transformers
+    - faiss-cpu
+    - transformers
+    - rank-bm25
+    - torch
+    - tf_keras
+    - python-multipart
+    - pypdf
