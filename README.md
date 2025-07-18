@@ -13,7 +13,21 @@ Para testar os serviços de upload dos arquivos e de RAG para responder com base
 
 ## Arquitetura proposta
 
+![Arquitetura da API](images/arquitetura.png)
 
+- Camada de API Gateway: 
+
+  Camada para aplicação da autentição e rate limiting, visando controlar a quantidade de requisições que um cliente pode fazer para uma API, evitando DDOS.
+
+- Camada Load Balancer:
+
+  Camada de Load Balancer para balancear o trafego de requisiçõeses entre os pods do Kubernets.
+
+- Camada de aplicação:
+
+  Camada de aplicação é executada dentro de um cluster kubernets, onde a API é executada em multiplos pods, possibilitando o autoscaller automático para pods e nós do cluster.
+
+  Além disso, a API pode ser configurada para utilizar multiplos workers com objetivo de maximizar uso dos recursos de CPU de cada pod.
 
 ## LLM, RAG e afins
 
