@@ -9,7 +9,73 @@ especificado abaixo.
 
 ## Arquitetura proposta
 
-## Instalação e execução
+
+## LLM, RAG e afins
+
+- Para chuknização foi utilizado o `RecursiveCharacterTextSplitter` do Langchain para dividir o texto em chunks (tokens).
+- Para embeddings foi utilizado o modelo `sentence-transformers/all-MiniLM-L6-v2`
+- Para banco vetorial foi utilizado o ChromaDB que é padrão da documentação do Langchain. 
+
+## API 
+
+API com três serviços diferentes detalhados abaixo:
+
+Serviços:
+
+- [POST] /upload/
+
+Serviço para upload de arquivos .pdf, chunknização, geração de embeddings e armazenamento vetorial. Além dos arquivos .pdf de entrada, o serviço recebe parametros para configuração da chunknização.
+
+Parametros:
+   
+    - files: array<string> (required)
+    - chunk_size: integer
+    - chunk_overlap: integer
+
+Resposta [200]:
+
+```
+{
+  "status": "success",
+  "loaded_files": [
+    "file_name_1.pdf",
+    "file_name_2.pdf"
+  ]
+}
+```
+
+- [GET] /rag/
+
+Parametros:
+   
+    - question: string (required)
+    - bm25: boolean
+
+Resposta [200]:
+
+```
+{
+  "answer": "resposta"
+}
+```
+
+- [POST] /classify/
+
+Parametros:
+   
+    - input_data: string (required)
+
+Resposta [200]:
+
+```
+{
+  "classification": "positive",
+  "probability": 0.8
+}
+```
+
+
+## Instalação e execução da API
 
 Para instalar e executar o ambiente criado.
 ```
