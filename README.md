@@ -7,7 +7,12 @@ especificado abaixo.
 - naive-RAG: Receber uma pergunta e retornar a resposta adequada baseada nos documentos indexados.
 - Classificador de sentimentos: Receber uma sentença e classificar usando LLM ou SLM. Preferencialmente, utilizar logprobs para fundamentar a classificação
 
+## Arquivos de teste
+
+Para testar os serviços de upload dos arquivos e de RAG para responder com base nesse contexto, foram "impressos" em PDF algumas páginas da web com definições sobre MLOps. A ideia é que o RAG consiga responder sobre esse assunto. Os arquivos estão disponíveis na pasta `pdfs_para_tests/`.
+
 ## Arquitetura proposta
+
 
 
 ## LLM, RAG e afins
@@ -15,6 +20,8 @@ especificado abaixo.
 - Para chuknização foi utilizado o `RecursiveCharacterTextSplitter` do Langchain para dividir o texto em chunks (tokens).
 - Para embeddings foi utilizado o modelo `sentence-transformers/all-MiniLM-L6-v2`
 - Para banco vetorial foi utilizado o ChromaDB que é padrão da documentação do Langchain. 
+- Biblioteca majoritariamente utilizada: ``Langchain
+- LLM para responder questões: `llama3.1` usando a biblioteca `Ollama`.
 
 ## API 
 
