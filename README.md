@@ -102,3 +102,26 @@ http://localhost:8080/docs
 ```
 
 Nessa documentação poderão ser realizados testes de execução da API
+
+## Referências para implementação
+
+  - LLM e API
+    
+    Projeto pessoal para criação de chat que tem como objetivo responder sobre espiritismo a partir de livros de Allan Kardec carregados como contexto do RAG. 
+  
+    Link: https://github.com/arrudamichel/project__spiritism_chat
+
+- API
+  -  Projeto pessoal para criação de chat que tem como objetivo responder sobre espiritismo a partir de livros de Allan Kardec carregados como contexto do RAG. 
+  
+      Link: https://github.com/arrudamichel/project__spiritism_chat
+
+  - Projeto de dissertação que auxiliei na elaboração de uma API com FastAPI para upload de imagens, processamento e retorno das emoções que as cores expressavam.
+  
+      Link: https://github.com/airinecarmo/api-emotion-colors-images
+
+- BM25
+
+  Dissertação de mestrado: Usei BM25 como baseline comparativo para as técnicas propostas na dissertação.
+
+  Link: https://www.cos.ufrj.br/uploadfile/publicacao/2921.pdf
