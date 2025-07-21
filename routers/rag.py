@@ -14,7 +14,7 @@ def naive_rag(question: str, bm25: Optional[bool] = False):
         tokenized_corpus = [doc.split() for doc in corpus]
         bm25_model = BM25Okapi(tokenized_corpus)
         tokenized_query = question.split()
-        results = bm25_model.get_top_n(tokenized_query, corpus, n=3)
+        corpus = bm25_model.get_top_n(tokenized_query, corpus, n=3)
 
     resp = llm_model.answer_question(question, corpus)
 

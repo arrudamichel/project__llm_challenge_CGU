@@ -9,6 +9,4 @@ def save(chunks):
     vectorstore.add_documents(chunks)
 
 def search(question, top_k=5):
-    retriever = vectorstore.as_retriever(search_kwargs={"k": top_k})
-    docs = retriever.get_relevant_documents(question)
-    return docs
+    return vectorstore.similarity_search(question, k=top_k)
