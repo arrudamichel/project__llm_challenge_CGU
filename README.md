@@ -15,19 +15,74 @@ Para testar os serviços de upload dos arquivos e de RAG para responder com base
 
 ![Arquitetura da API](images/arquitetura.png)
 
-- Camada de API Gateway: 
+### API Gateway
 
-  Camada para aplicação da autentição e rate limiting, visando controlar a quantidade de requisições que um cliente pode fazer para uma API, evitando DDOS.
+O API Gateway é uma camada intermediária entre clientes e serviços de backend, centralizando a gestão de requisições e funções críticas como autenticação, autorização, rate limiting, roteamento e segurança. Ele atua como ponto único de entrada para todas as chamadas de API.
 
-- Camada Load Balancer:
+Vantagens:
+  - Implementa OAuth2, JWT e Criptografia HTTPS, garantindo autenticação robusta e proteção dos dados em trânsito.
 
-  Camada de Load Balancer para balancear o trafego de requisiçõeses entre os pods do Kubernets.
+  - Configura rate limiting, prevenindo ataques DDoS e abusos de requisições.
 
-- Camada de aplicação:
+  - Isola as camadas de aplicação e banco de dados, mantendo os serviços internos protegidos e ocultos do público. 
 
-  Camada de aplicação é executada dentro de um cluster kubernets, onde a API é executada em multiplos pods, possibilitando o autoscaller automático para pods e nós do cluster.
 
-  Além disso, a API pode ser configurada para utilizar multiplos workers com objetivo de maximizar uso dos recursos de CPU de cada pod.
+### Load Balancer
+
+O Load Balancer distribui o tráfego de forma equilibrada entre múltiplos pods, servidores ou instâncias da aplicação, otimizando recursos e garantindo disponibilidade.
+
+Vantagens:
+- Evita sobrecarga em um único servidor, o que poderia comprometer o desempenho e causar indisponibilidades. 
+
+- Facilita a escalabilidade horizontal, com adição ou remoção de instâncias de forma transparente para o cliente.
+
+- Aumento da resiliência e disponibilidade. Caso uma instância falhe, o Load Balancer automaticamente redireciona as requisições para outros servidores saudáveis, garantindo a continuidade do serviço.
+
+### Camada de aplicação:
+
+#### API Layer 
+
+A API Layer é o núcleo responsável por receber, processar e responder às requisições dos clientes. Nesta camada, a API (FastAPI) é executada em um cluster Kubernetes, distribuída em múltiplos pods para garantir alta escalabilidade, disponibilidade e tolerância a falhas.
+
+Vantagens: 
+- Capacidade de escalar horizontalmente, aumentando ou diminuindo a quantidade de pods automaticamente de acordo com a demanda.
+
+- Cada pod pode aproveitar ao máximo os recursos da máquina que o hospeda ao utilizar múltiplos workers (de API), garantindo melhor desempenho no processamento das requisições.
+
+- Suporte a processamento síncrono e assíncrono, com filas (Queue) para tarefas pesadas e assíncronas.
+
+
+- Essa abordagem garante eficiência, alta performance e resiliência, além de possibilitar o escalonamento tanto de pods quanto de nós (máquinas) do cluster Kubernetes. Com isso, o sistema consegue lidar com grandes volumes de tráfego sem comprometer a qualidade do serviço.
+
+#### Queue (Fila)
+
+É responsável por gerenciar tarefas assíncronas que não precisam ser processadas imediatamente pela API, permitindo que operações mais pesadas sejam executadas em segundo plano por workers especializados. Ao intermediar a comunicação entre a camada de API e os workers, a fila garante que o sistema continue responsivo mesmo sob alta carga, evitando bloqueios e lentidão.
+
+#### Workers
+
+É composta por pods especializados e dedicados dentro do cluster Kubernets e são responsáveis por executar tarefas complexas e demoradas que são delegadas pela fila (Queue). São configurados com GPU própria para realizar a execução inferência de modelos LLM (Large Language Models).
+
+Vantagens:
+
+- Execução paralela de workloads pesadas (ex.: upload ou geração de respostas via LLM).
+
+- Aproveitamento de GPU, acelerando inferências e tarefas de IA.
+
+- Escalabilidade independente, ajustando a quantidade de workers sem afetar a API.
+
+
+#### VectorDB
+
+A camada de VectorDB é responsável por armazenar e gerenciar representações vetoriais (embeddings) de documentos, textos ou outros dados, permitindo buscas semânticas altamente eficientes e precisas. 
+
+A ferramenta utilizada foi o ChromaDB, um banco de dados vetorial otimizado para operações de similaridade, essencial em aplicações que envolvem LLMs (Large Language Models) e RAG (Retrieval-Augmented Generation).
+
+## Exemplo de Operação Assíncrona
+![Upload Files](images/upload_files.png)
+
+Neste exemplo, é ilustrado o fluxo de execução do serviço de upload de arquivos. Como o envio e o processamento dos arquivos podem ser operações pesadas e demoradas, foi adotado um fluxo assíncrono para manter a API sempre disponível. Assim, ao receber o arquivo, o endpoint de upload retorna uma resposta de sucesso (HTTP 200) confirmando o recebimento, enquanto a requisição é enviada para a fila de processamento.
+
+A fila gerencia o momento adequado para iniciar o processamento, direcionando a tarefa para um worker especializado, responsável pelas etapas de chunkização, geração de embeddings e armazenamento no banco vetorial (VectorDB). Ao finalizar o processamento, a API é notificada por meio de um serviço de callback, informando a conclusão com sucesso.
 
 ## LLM, RAG e afins
 
