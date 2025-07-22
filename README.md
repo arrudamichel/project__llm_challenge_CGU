@@ -86,11 +86,26 @@ A fila gerencia o momento adequado para iniciar o processamento, direcionando a 
 
 ## LLM, RAG e afins
 
-- Para chuknização foi utilizado o `RecursiveCharacterTextSplitter` do Langchain para dividir o texto em chunks (tokens).
-- Para embeddings foi utilizado o modelo `sentence-transformers/all-MiniLM-L6-v2`
-- Para banco vetorial foi utilizado o ChromaDB que é padrão da documentação do Langchain. 
-- Biblioteca majoritariamente utilizada: ``Langchain
-- LLM para responder questões: `llama3.1` usando a biblioteca `Ollama`.
+- Biblioteca majoritariamente utilizada: `Langchain`
+
+O LangChain foi escolhido por ser amplamente utilizado como biblioteca para aplicações RAG, fornecendo abstrações de alto nível que facilitam a construção de pipelines com LLMs, desde a preparação de dados (splitters e embeddings) até a orquestração de respostas oriundas do modelo LLM.
+
+- Modelo LLM para responder questões: `llama3.1` usando a biblioteca `Ollama`.
+
+O Llama 3.1 é amplamente utilizado e foi escolhido por ter custo zero por uso, podendo ser executado na máquina local e tento qualidade comparável a modelos pagos. Por ter execução local, garante menor latência e maior controle de dados sensíveis. Além disso, tem boa integração com a biblioteca usada para o RAG, o LangChain, a partir do uso do Ollama.
+
+- Chuknização: `RecursiveCharacterTextSplitter`
+
+Esse splitter é recomendado pela documentação do LangChain por ser flexível e otimizado para lidar com textos de diferentes tamanhos, respeitando limites de tokens do modelo. Ele divide os documentos em partes menores (chunks) de forma hierárquica, buscando preservar a estrutura semãntica, o que melhora a relevância dos chunks para uso na recuperação de informações (RAG). 
+
+- Geração de embeddings: modelo `sentence-transformers/all-MiniLM-L6-v2`
+
+Este modelo é amplamente utilizado no mercado gerando embeddings semânticos de alta qualidade com baixo custo computacional. É ideal para aplicações de RAG, pois mantém performance robusta mesmo em hardware limitado, podendo ser executado em máquina local.
+
+- Banco vetorial: ChromaDB
+
+O ChromaDB é o banco vetorial padrão do ecossistema LangChain, amplamente testado e documentado. Sua integração com LangChain garante facilidade de implementação, suporte para persistência local e velocidade na busca por dados.
+
 
 ## API 
 
