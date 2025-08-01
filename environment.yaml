@@ -13,6 +13,8 @@ dependencies:
     - langchain-huggingface
     - langchainhub
     - langchain_chroma
+    - langchain_openai
+    - langchain_ollama
 
     - tensorflow-macos
     - tensorflow-metal
@@ -27,3 +29,4 @@ dependencies:
     - tf_keras
     - python-multipart
     - pypdf
+    - openai
