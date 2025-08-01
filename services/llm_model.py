@@ -1,9 +1,11 @@
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
+import requests
 
-llm = Ollama(model="llama3.1")
+LLAMA_MODEL = "llama3.1"
+llm = OllamaLLM(model=LLAMA_MODEL)
 
 
 def answer_question(question, docs):
