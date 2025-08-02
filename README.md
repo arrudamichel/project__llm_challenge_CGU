@@ -94,6 +94,12 @@ O LangChain foi escolhido por ser amplamente utilizado como biblioteca para apli
 
 O Llama 3.1 é amplamente utilizado e foi escolhido por ter custo zero por uso, podendo ser executado na máquina local e tento qualidade comparável a modelos pagos. Por ter execução local, garante menor latência e maior controle de dados sensíveis. Além disso, tem boa integração com a biblioteca usada para o RAG, o LangChain, a partir do uso do Ollama.
 
+- Modelo LLM para classificar sentimentos: `llama3.1` ou `OpenAI`.
+
+Llama 3.1 é um modelo amplamente adotado na comunidade, com a vantagem de ser gratuito e de código aberto. Pode ser executado localmente, o que elimina custos com API, e apresenta uma qualidade comparável à de modelos comerciais.
+
+OpenAI oferece modelos pagos, reconhecidos por sua alta performance e robustez. Tem fácil integração via API e ampla documentação.
+
 - Chuknização: `RecursiveCharacterTextSplitter`
 
 Esse splitter é recomendado pela documentação do LangChain por ser flexível e otimizado para lidar com textos de diferentes tamanhos, respeitando limites de tokens do modelo. Ele divide os documentos em partes menores (chunks) de forma hierárquica, buscando preservar a estrutura semãntica, o que melhora a relevância dos chunks para uso na recuperação de informações (RAG). 
