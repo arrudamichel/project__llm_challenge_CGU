@@ -7,8 +7,8 @@ def load(tmp_file_path, file_name):
 
     for d in docs:
         d.metadata.update({
-            "source": file_name,
+            "filename": file_name,
             "page": d.metadata.get("page", None)
         })
-    
+
     return docs

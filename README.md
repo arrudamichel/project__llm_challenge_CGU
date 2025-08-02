@@ -140,6 +140,7 @@ Resposta [200]:
 Parametros:
    
     - question: string (required)
+    - filename: string (optional)
     - bm25: boolean
 
 Resposta [200]:
@@ -153,15 +154,32 @@ Resposta [200]:
 - [TODO][POST] /classify/
 
 Parametros:
-   
-    - input_data: string (required)
-
+ ```  
+{
+  "input_data": "string",       # Frase para classificacao do sentimento
+  "model": "string",            # openai ou llama3.1
+  "openai_api_key": "string"    # Caso model = openai, entre com api_key
+}
+```
 Resposta [200]:
 
 ```
 {
-  "classification": "positive",
-  "probability": 0.8
+  "sentimento": "negativo",
+  "probabilidades": [
+    {
+      "classe": "positivo",
+      "probabilidade": 0.05
+    },
+    {
+      "classe": "negativo",
+      "probabilidade": 0.85
+    },
+    {
+      "classe": "neutro",
+      "probabilidade": 0.1
+    }
+  ]
 }
 ```
 

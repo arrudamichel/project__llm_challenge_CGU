@@ -6,8 +6,12 @@ from rank_bm25 import BM25Okapi
 router = APIRouter()
 
 @router.get("/")
-def naive_rag(question: str, bm25: Optional[bool] = False):
-    results = vector_database.search(question, top_k=5)
+def naive_rag(question: str, filename : Optional[str] = None, bm25: Optional[bool] = False):
+    if filename:
+        results = vector_database.search_by_filename(question, filename, top_k=5)
+    else:
+        results = vector_database.search(question, top_k=5)
+
     corpus = [doc.page_content for doc in results]
     
     if bm25:
