@@ -119,6 +119,8 @@ API com três serviços diferentes detalhados abaixo:
 
 Serviços:
 
+### Upload
+
 - [POST] /upload/
 
 Serviço para upload de arquivos .pdf, chunknização, geração de embeddings e armazenamento vetorial. Além dos arquivos .pdf de entrada, o serviço recebe parametros para configuração da chunknização.
@@ -141,12 +143,41 @@ Resposta [200]:
 }
 ```
 
-- [GET] /rag/
+### Naive-RAG
+
+O naive-rag é um serviço simples de RAG (Retrieval-Augmented Generation) baseado em LLaMA 3.1. Ele realiza a recuperação de contexto relevante e gera respostas fundamentadas em documentos usando um pipeline direto e eficiente.
+
+#### Como funciona
+
+1. Entrada:
+O usuário fornece uma pergunta em linguagem natural.
+Opcionalmente, pode ser ativado o rerank com BM25 para refinar a ordem dos documentos recuperados.
+
+2. Recuperação de contexto:
+O sistema consulta um vetorstore (ChromaDB) usando embeddings para buscar os k=5 documentos mais semanticamente relevantes.
+Se o rerank com BM25 estiver ativado, os resultados são reordenados com base em similaridade lexical tradicional.
+
+3. Geração da resposta:
+  Um modelo LLM (LLaMA 3.1) recebe o contexto recuperado e a pergunta original.
+  A resposta é gerada com base apenas nesse conteúdo — sem acesso externo.
+
+#### Tecnologias utilizadas
+- ChromaDB: banco vetorial persistente para armazenar e consultar embeddings de documentos.
+- LLaMA 3.1: modelo de linguagem local usado para gerar a resposta final.
+- BM25 (opcional): método de reranqueamento lexical para maior precisão em certos contextos.
+
+#### Diferença entre os serviços:
+
+- full_database: Utiliza todo banco vetorial como contexto para geração da resposta.
+- by_filename: Utiliza só o registro do arquivo indicado no campo "filename" como contexto para geração da resposta.
+
+#### Serviços:
+
+- [GET] /naive-RAG/full_database
 
 Parametros:
    
     - question: string (required)
-    - filename: string (optional)
     - bm25: boolean
 
 Resposta [200]:
@@ -156,6 +187,108 @@ Resposta [200]:
   "answer": "resposta"
 }
 ```
+
+- [GET] /naive-RAG/by_filename
+
+Parametros:
+   
+    - question: string (required)
+    - filename: string
+    - bm25: boolean
+
+Resposta [200]:
+
+```
+{
+  "answer": "resposta"
+}
+```
+
+### RAG
+
+Esta seção um RAG (Retrieval-Augmented Generation) usando o framework LangGraph para organizar o fluxo com dois agentes inteligentes:
+
+1. Agente Gerador:
+Recebe uma pergunta do usuário, consulta um banco vetorial (ChromaDB) com documentos previamente indexados, e gera várias respostas alternativas usando um modelo LLM (como LLaMA 3.1).
+
+2. Agente Avaliador:
+Analisa as respostas geradas e escolhe a melhor resposta com base em critérios como clareza, precisão e relevância.
+
+Esses dois agentes são conectados por meio de um grafo de estados (LangGraph) que define a ordem das etapas:
+
+```
+Usuário → Geração de Respostas → Avaliação → Resposta Final
+```
+
+#### Tecnologias usadas:
+- LangChain: para criação de agentes e integração com LLMs.
+- LangGraph: para controlar o fluxo dinâmico entre os agentes.
+- ChromaDB: como banco de vetores para recuperação de contexto relevante.
+- LLMs (como LLaMA 3.1): para gerar e avaliar respostas com base nos documentos.
+
+#### Diferença entre os serviços:
+
+- full_database: Utiliza todo banco vetorial como contexto para geração e avaliação.
+- by_filename: Utiliza só o registro do arquivo indicado no campo "filename" como contexto para geração e avaliação.
+
+#### Serviços:
+
+- [GET] /rag/full_database
+
+Parametros:
+   
+    - question: string (required)
+    - bm25: boolean
+
+Resposta [200]:
+
+```
+{
+  "answer": "resposta"
+}
+```
+
+- [GET] /rag/by_filename
+
+Parametros:
+   
+    - question: string (required)
+    - filename: string
+    - bm25: boolean
+
+Resposta [200]:
+
+```
+{
+  "answer": "resposta"
+}
+```
+
+### Classify
+
+O método classify tem como objetivo analisar o sentimento de uma sentença em linguagem natural. Ele retorna tanto a classificação principal (positivo, neutro ou negativo), quanto as probabilidades associadas a cada classe.
+
+#### Como funciona
+
+1. Entrada:
+  - Uma sentença de texto (string).
+  - Modelo utilizado: OpenAI ou LLaMA 3.1.
+  - Opcionalmente, uma chave de API da OpenAI (openai_api_key) para escolha do modelo.
+
+2. Processamento:
+O texto é analisado por um prompt estruturado para classificação de sentimentos.
+
+3. Saída:
+A classe predominante do sentimento: "positivo", "neutro" ou "negativo".
+As probabilidades estimadas para cada classe.
+
+
+#### Tecnologias utilizadas
+- llama3.1: executado localmente, ideal para uso offline ou privado.
+- OpenAI: se openai_api_key for fornecida, usa GPT-4 ou similar.
+- Prompt engineering: Estrutura de instrução clara para garantir saída em formato JSON com rótulo e probabilidades.
+
+#### Serviços
 
 - [TODO][POST] /classify/
 

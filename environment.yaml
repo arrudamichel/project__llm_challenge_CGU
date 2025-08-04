@@ -30,3 +30,5 @@ dependencies:
     - python-multipart
     - pypdf
     - openai
+    - chromadb
+    - langgraph

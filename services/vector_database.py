@@ -13,3 +13,6 @@ def search(question, top_k=5):
 
 def search_by_filename(question, filename, top_k=5):
     return vectorstore.similarity_search(question, k=top_k, filter={"filename": filename})
+
+def get_vectorstore():
+    return vectorstore

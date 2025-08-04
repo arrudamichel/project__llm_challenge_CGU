@@ -33,7 +33,6 @@ template="""
 def classify_sentiment_openai(text: str, model="gpt-4o-mini", api_key="sua-api-key-aqui") -> dict:
     os.environ["OPENAI_API_KEY"] = api_key
     
-    # Inicializa o LLM com logprobs ativado
     llm_openai = ChatOpenAI(model=model)
     
     chain = prompt | llm_openai | parser

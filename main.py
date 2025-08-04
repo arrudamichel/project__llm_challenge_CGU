@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import upload, rag, classify
+from routers import upload, rag, classify, naive_rag
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CGU Data Scientist Challenge API", 
@@ -15,6 +15,7 @@ app.add_middleware(
     )
 
 app.include_router(upload.router, prefix="/upload", tags=["Upload"])
+app.include_router(naive_rag.router, prefix="/naive-rag", tags=["naive-RAG"])
 app.include_router(rag.router, prefix="/rag", tags=["RAG"])
 app.include_router(classify.router, prefix="/classify", tags=["Classification"])
 
