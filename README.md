@@ -5,6 +5,7 @@ especificado abaixo.
 
 - Upload de PDF: Receber arquivos, realizar o processamento de dados, criação de embeddnigs e indexação em banco vetorial
 - naive-RAG: Receber uma pergunta e retornar a resposta adequada baseada nos documentos indexados.
+- RAG: Receber uma pergunta e retornar a resposta adequada baseada nos documentos indexados. Diferença para o naive-RAG foi a utilização de recursos avançados para garantir a qualidade da resposta.
 - Classificador de sentimentos: Receber uma sentença e classificar usando LLM ou SLM. Preferencialmente, utilizar logprobs para fundamentar a classificação
 
 ## Arquivos de teste
