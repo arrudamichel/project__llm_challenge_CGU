@@ -1,6 +1,6 @@
 # Teste Cientista de Dados CGU
 
-Deve ser construida uma API utilizando FastAPI com três endpoints principais, conforme
+Deve ser construida uma API utilizando FastAPI com quatro endpoints principais, conforme
 especificado abaixo.
 
 - Upload de PDF: Receber arquivos, realizar o processamento de dados, criação de embeddnigs e indexação em banco vetorial
@@ -116,7 +116,7 @@ O ChromaDB é o banco vetorial padrão do ecossistema LangChain, amplamente test
 
 ## API 
 
-API com três serviços diferentes detalhados abaixo:
+API com quatro serviços diferentes detalhados abaixo:
 
 Serviços:
 
