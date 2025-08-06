@@ -5,7 +5,9 @@ from typing import TypedDict, List
 from . import vector_database
 
 # ----- Models -----
-llm_generator = OllamaLLM(model="llama3.1", temperature=0.9)
+generator_low = OllamaLLM(model="llama3.1", temperature=0.3)
+generator_mid = OllamaLLM(model="llama3.1", temperature=0.7)
+generator_high = OllamaLLM(model="llama3.1", temperature=0.9)
 llm_evaluator = OllamaLLM(model="llama3.1", temperature=0)
 
 vectorstore_obj = vector_database.get_vectorstore() 
@@ -49,12 +51,11 @@ def generate_responses(state: RAGState) -> RAGState:
     """)
 
     # Gerar múltiplas respostas com variação via temperatura
-    respostas = []
-    for _ in range(3):
-        resposta = llm_generator.invoke(prompt.format(question=question, context=context))
-        respostas.append(resposta.strip())
+    r1 = generator_low.invoke(prompt.format(question=question, context=context)).strip()
+    r2 = generator_mid.invoke(prompt.format(question=question, context=context)).strip()
+    r3 = generator_high.invoke(prompt.format(question=question, context=context)).strip()
     
-    return {"question": question, "responses": respostas, "best_response": ""}
+    return {"question": question, "responses": [r1, r2, r3], "best_response": ""}
 
 # ----- AVALIADOR DE RESPOSTAS -----
 def evaluate_responses(state: RAGState) -> RAGState:
